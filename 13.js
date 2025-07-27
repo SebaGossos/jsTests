@@ -7,33 +7,56 @@
 // Si el array está vacío, devuelve un array vacío
 // Los regalos son emojis 🎁... por lo que tenlo en cuenta a la hora de contar su longitud...
 // Por suerte, cada posición del array siempre tiene la misma longitud...
-// wrapGifts(["📷", "⚽️"])
-// /* Resultado:
-// [ '****',
-//   '*📷*',
-//   '*⚽️*',
-//   '****'
-// ]
-// */
 
-// wrapGifts(["🏈🎸", "🎮🧸"])
-// /* Resultado:
-// [ '******',
-//   '*🏈🎸*',
-//   '*🎮🧸*',
-//   '******'
-// ]
-// */
+// export default function wrapGifts(gifts) {
+//   if (gifts.length === 0 ) return [];
+  
+//   return gifts.reduce((acc, curr, i, arr) => {
+//     console.log(acc)
+//     let lengthCurr = '*' + '*'.repeat(curr.length) + '*'
+//     if( i === 0 && arr.length - 1 === i ) return [lengthCurr, '*' + curr + '*', lengthCurr]
+//     if( i === 0 ) return [lengthCurr, '*' + curr + '*']
+//     if( arr.length - 1 === i ) return [...acc, '*' + curr + '*', lengthCurr]
+//     return [...acc, '*' + curr + '*']
+//   }, [])
+   
+// }
 
-// wrapGifts(["📷"])
-// /* Resultado:
-// [ '****',
-//   '*📷*',
-//   '****'
-// ]
-// */
-
-export default function wrapGifts(gifts) {
-  // ¡No olvides compartir tu solución en redes!
-  return []
+function wrapGifts(gifts) {
+  if (gifts.length === 0) return [];
+  const width = gifts[0].length + 2;
+  const border = '*'.repeat(width);
+  return [
+    border,
+    ...gifts.map(gift => `*${gift}*`),
+    border
+  ];
 }
+
+
+
+// console.log(wrapGifts(["📷", "⚽️"]))
+console.log(wrapGifts(["🏀"]))
+/* Resultado:
+[ '****',
+  '*📷*',
+  '*⚽️*',
+  '****'
+]
+*/
+console.log(wrapGifts(["🏈🎸", "🎮🧸", "🎮🧸"]))
+/* Resultado:
+[ '******',
+  '*🏈🎸*',
+  '*🎮🧸*',
+  '******'
+]
+*/
+
+// console.log(wrapGifts(["📷"]))
+/* Resultado:
+[ '****',
+  '*📷*',
+  '****'
+]
+*/
