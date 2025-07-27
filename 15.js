@@ -8,9 +8,51 @@
 
 // Lo importante: recorrer el array de izquierda a derecha para ver que la subida es siempre estricta, detectar el punto más alto y entonces ver que la bajada es estricta hacia abajo...
 
-export default function checkSledJump(heights) {
+// export default function checkSledJump(heights) {
+//   const heightsCounts = heights.length
+//   if(heightsCounts < 3 ) return false
   
-  return false
+//   let isGrow = true
+//   let isDecreasing = true
+
+//   let index = 0
+  
+//   for (let h of heights) {
+//     if(index === 0) {
+//       index++
+//       continue
+//     };
+//     if( h === heights[ index - 1 ] ) {
+//       return false
+//     }
+
+//     if( h > heights[ index - 1 ] && !isGrow ) {
+//       console.log(33)
+//       return false
+//     }
+//     if( h > heights[ index - 1 ] && isGrow ) {
+//       index++
+//       continue
+//     }
+//     if( h < heights[ index - 1 ] && isDecreasing) {
+//       isGrow = false
+//       index++
+//       continue
+//     }
+//   }
+//   return isGrow ? false : true
+
+// }
+function checkSledJump(heights) {
+  let i = 1;
+  // Subida estricta
+  while (i < heights.length && heights[i] > heights[i - 1]) i++;
+  // Debe haber al menos un pico (no solo subida)
+  if (i === 1 || i === heights.length) return false;
+  // Bajada estricta
+  while (i < heights.length && heights[i] < heights[i - 1]) i++;
+  // Debe terminar al final del array
+  return i === heights.length;
 }
 
 
@@ -21,4 +63,5 @@ console.log(checkSledJump([0, 1000, 1])) // -> true: sube y baja de forma estric
 
 console.log(checkSledJump([2, 4, 4, 6, 2])) // false: no sube de forma estricta
 console.log(checkSledJump([1, 2, 3])) // false: sólo sube
+console.log(checkSledJump([1, 2])) // false
 console.log(checkSledJump([1, 2, 3, 2, 1, 2, 3])) // false: sube y baja y sube... ¡no vale!
