@@ -13,30 +13,67 @@
 
 // ¡Ten cuidado! Como has visto en el segundo ejemplo, el organigrama puede tener diferentes niveles y además nos viene información que puede ser que no necesitemos. Debemos tener en cuenta el parámetro de carrierID para calcular bien el número y contar todo su equipo.
 
+// export default function countPackages(carriers, carrierID) {
+//   let total = 0
+//   let carrierData = carriers.reduce((acc, curr, i, arr) => {
+//     if(curr[0] === carrierID) {
+//       total += curr[1]
+//       if(!curr[2].length) return acc
+//       acc = curr[2]
+//     }
+//     if( acc.includes( curr[0] ) ) {
+//       total += curr[1]
+//       if(curr[2].length) return [...acc, ...curr[2] ]
+//     }
+//     return acc
+//   }, []) 
+//   return total
+// }
+
 export default function countPackages(carriers, carrierID) {
-  
-  return 0
+  // 1) Creamos un Map: id → { paquetes, subordinados }
+  const carrierMap = new Map(
+    carriers.map(([id, paquetes, subs]) => [id, { paquetes, subs }])
+  );
+  console.log( carrierMap)
+
+  let total = 0;
+  const stack = [carrierID];
+
+  // 2) Mientras queden IDs en la pila
+  while (stack.length) {
+    const id = stack.pop();
+    const data = carrierMap.get(id);
+    if (!data) continue;              // Por si viene un ID que no existe
+    total += data.paquetes;          // Sumamos paquetes de este transportista
+    stack.push(...data.subs);        // Añadimos sus subordinados a la pila
+  }
+
+  return total;
 }
 
 
-// const carriers = [
-//   ['dapelu', 5, ['midu', 'jelowing']],
-//   ['midu', 2, []],
-//   ['jelowing', 2, []]
-// ]
 
-// countPackages(carriers, 'dapelu') // 9
-// // 5 de dapelu, 2 de midu y 2 de jelowing = 9
 
-// const carriers2 = [
-//   ['lolivier', 8, ['camila', 'jesuspoleo']],
-//   ['camila', 5, ['sergiomartinez', 'conchaasensio']],
-//   ['jesuspoleo', 4, []],
-//   ['sergiomartinez', 4, []],
-//   ['conchaasensio', 3, ['facundocapua', 'faviola']],
-//   ['facundocapua', 2, []],
-//   ['faviola', 1, []]
-// ]
+const carriers = [
+  ['dapelu', 5, ['midu', 'jelowing']],
+  ['midu', 2, []],
+  ['jelowing', 2, []]
+]
 
-// countPackages(carriers2, 'camila') // 15
+
+console.log(countPackages(carriers, 'dapelu') )// 9
+// 5 de dapelu, 2 de midu y 2 de jelowing = 9
+
+const carriers2 = [
+  ['lolivier', 8, ['camila', 'jesuspoleo']],
+  ['camila', 5, ['sergiomartinez', 'conchaasensio']],
+  ['jesuspoleo', 4, []],
+  ['sergiomartinez', 4, []],
+  ['conchaasensio', 3, ['facundocapua', 'faviola']],
+  ['facundocapua', 2, []],
+  ['faviola', 1, []]
+]
+
+console.log(countPackages(carriers2, 'camila')) // 15
 // // 5 de camila, 4 de sergiomartinez, 3 de conchaasensio, 2 de facundocapua y 1 de faviola = 15
